@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "knchinvoices",
+  "private_key_id": "a33b0b88e7db3ee281f3dd9784c805b7cff6478a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC5XYhCYi7H4ifx\naIBcVI3x7QjpnVsWP6ir8q38i2067HSFhhN9XskHSRWhFdNRhP2x0LmtsBOqLv3A\nAxbfuXK21bNF54eZScZm4MvY9sEawT9+EQAGufPINyqbnTGwdU+Us/EMmKBrYxoe\nG3b/A8to/ucw7/VvLYJV+RTKOGDtQe+2rAOLpWN9ETdpCIekKOpd6bZ/I9YuY1yT\naIOThq9cYNtwVydgMIwWPzzinz5lYjlwl2YsN86FR+k43E3tahPq6Dden29q6RX6\n8TbUqY5ykwyyaUOlln5daVx42+2JkniommY5yBBKYtwx94ntKem8dJS2mcuJGk68\n7ONJLmrlAgMBAAECggEAEFGoBagdKY3DKcv4blMnV/gf7mk4Xqy7YxVEtKoVs2Kj\nyNQ1R7aeM3JUts90FjDYy4cZAa3cXVbbvMQeMb4NglktT5HYQeouea+ADW7T21DO\nD9bb+LugNwKG/BeKYK2YlE/Z1du4q8ZCw18e9R6BZudMtTs65qR2sq5GDUjfXPkS\ns5BwkVXsEJjWuUgDx/3gxyqsBLyz9VmI40mtHUguVNBvfxfjLJJV4qz+W/dcIZIH\n8EBM2AZA43ZEVgRR0zKDb87LoYEpVAOzwocUWZqq3JHrfrjvDZtu6PHcod1F8hvF\n1xA1FaVpmysvdD6UIx4yRgot3ZVk/s1ZGLJ1dyAjdQKBgQD52rGWZVYhM6qujLqy\nswRUWMoFQtypL+bvIZb6ukqX9lDfcrQihebifUmZi2WmTaGnmcH+JsMNnsQXnh42\ndkToBl1oOJyt/qV5ST0xjeFiIs6GbFpeLPhyn7eVUXge8DjZLkWzVBk9ow4KrGy3\ndSS2tuiGtW4s/N8zP2O1c3GUjwKBgQC97MI0KLLaDasDSWvh3j3bh++lbf/i/1Y2\n5GawR9I6HGsqaGsWDEFcHLqcENoTdY7WgutdgYowJgu7pL220ccut9nyHQ6ndWry\n3YDlo9MzV1H858DBiXxnv2A3ES3zRqv2DQuk/H8g9KXa0f2EMuga1F10pJLQIUEh\npBkqzn5LSwKBgQCiPbwraMow7RfcGE3zVANvsegc2nnm8tAGX81mKind23hQYG9Q\nK5rtX2W3aqkrACYEavdpTUpDQeEbZPVBcDL2Z4un7XrwEPbqdwBheTvtOaTZ7OoR\nVSpPZB8Vur1BecOwYzenZuis+YBYtfYyesLIUqVTM+TDGcDlyje4z6nlSQKBgEGI\n7sI8wOpJCReLQDSiEUotL94vhLp5TPCIA38UaVAv+jKZ8UmcVPlJ2IJ9tiI80Fro\ntfp/9oUCu8213Ni2rjpKqmPG7wWNmKfREucqjngKy3mvJm4h2NGb0cFupiJp4nB2\ns+vsTJm8kXZeO1JgloKbgNv85cP3lZfcHesNcbrdAoGBAJoMyIBSbnQmosleJn/5\n7ySkbstlLCD8Gm6QeVxZ/0umYZ7dScC/mACWIp32gLOmqm56cmXLzNm1z9Lxriqx\nW6bxHZB7eby0ZuipSVfqFw/R4bud4c/7pngKSCkm1MQBBVkwy9ygcLRhayXkU417\nZQR3QVLVO1LrByMmCJQPLFLg\n-----END PRIVATE KEY-----\n",
+  "client_email": "knchinvoices@knchinvoices.iam.gserviceaccount.com",
+  "client_id": "114749360055822257683",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/knchinvoices%40knchinvoices.iam.gserviceaccount.com"
+}

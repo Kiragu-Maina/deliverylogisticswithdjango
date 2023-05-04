@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="{% static 'css/styles.css' %}"> -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <title>upload</title>
+</head>
+
+<style type="text/css">
+
+.login-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  padding: 40px;
+  transform: translate(-50%, -50%);
+  background: black;
+  box-sizing: border-box;
+  box-shadow: 0 15px 25px rgba(0,0,0,.6);
+  border-radius: 10px;
+}
+
+.login-box h2 {
+  margin: 0 0 30px;
+  padding: 0;
+  color: #fff;
+  text-align: center;
+}
+
+.login-box .user-box {
+  position: relative;
+}
+
+.login-box .user-box input {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  outline: none;
+  background: transparent;
+}
+.login-box .user-box label {
+  position: absolute;
+  top:0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  pointer-events: none;
+  transition: .5s;
+}
+
+.login-box .user-box input:focus ~ label,
+.login-box .user-box input:valid ~ label {
+  top: -20px;
+  left: 0;
+  color: #03e9f4;
+  font-size: 12px;
+}
+
+.login-box form .submit input {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  color: #03e9f4;
+  font-size: 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: .5s;
+  margin-top: 40px;
+  letter-spacing: 4px
+}
+
+.login-box .btn-primary:hover {
+  background: white;
+  color: green;
+  font-color: black;
+  border-radius: 5px;
+  /*box-shadow: 0 0 5px #03e9f4,
+              0 0 25px #03e9f4,
+              0 0 50px #03e9f4,
+              0 0 100px #03e9f4;*/
+}
+
+.login-box .submit span {
+  position: absolute;
+  display: block;
+}
+
+.login-box .submit input span:nth-child(1) {
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #03e9f4);
+  animation: btn-anim1 1s linear infinite;
+}
+
+/*@keyframes btn-anim1 {
+  0% {
+    left: -100%;
+  }
+  50%,100% {
+    left: 100%;
+  }
+}*/
+
+.login-box .submit input span:nth-child(2) {
+  top: -100%;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #03e9f4);
+  animation: btn-anim2 1s linear infinite;
+  animation-delay: .25s
+}
+/*
+@keyframes btn-anim2 {
+  0% {
+    top: -100%;
+  }
+  50%,100% {
+    top: 100%;
+  }
+}*/
+.login-box input.spn{
+
+
+}
+.login-box input.spn:hover {
+  background: gray;
+  color: green;
+  font-color: black;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #03e9f4,
+              0 0 25px #03e9f4,
+              0 0 50px #03e9f4,
+              0 0 100px #03e9f4;
+}
+
+
+.login-box .submit input span:nth-child(3) {
+  bottom: 0;
+  right: -100%;
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(270deg, transparent, #03e9f4);
+  animation: btn-anim3 1s linear infinite;
+  animation-delay: .10s;
+
+}
+
+/*@keyframes btn-anim3 {
+  0% {
+    right: -100%;
+  }
+  50%,100% {
+    right: 100%;
+  }
+}
+*/
+.login-box .submit span:nth-child(4) {
+  bottom: -100%;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, #03e9f4);
+  /*animation: btn-anim4 1s linear infinite;*/
+  animation-delay: .75s
+}
+
+/*@keyframes btn-anim4 {
+  0% {
+    bottom: -100%;
+  }
+  50%,100% {
+    bottom: 100%;
+  }
+}*/
+</style>
+<body class="login-box">
+    <div class="user" style="color: green; margin-top: 0px;">
+    <label>LOGIN</label>
+    </div>
+
+    <form method="POST" action="">{% csrf_token %}
+        <!-- <ul style="background-color: rgb(0,0,0); /* Fallback color */
+                    background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+                    color: white;
+                  font-weight: bold;
+                  border: 3px solid #f1f1f1;
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  z-index: 2;
+                  width: 80%;
+                  padding: 20px;
+                  text-align: center;
+                    list-style:none;">
+        -->
+        <div class="user-box">
+
+           <input type="text" name="username" placeholder="Enter Your name">
+           <!-- <label>Username</label> -->
+        ]
+        </div>
+         <div class="user-box">
+          <input type="password" name="password" placeholder="Enter Your Password">
+          <label>Password</label>
+        </div>
+        <li style="margin-bottom: 50px;">
+        <div class="submit">
+        <input class="spn" type="submit" value="log in" style="background: transparent;">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+
+        </div>
+    </div>
+        </li>
+
+            <!--{{form.errors}}-->
+            <!--{% for message in messages %}-->
+            <!--<p>{{message}}</p>-->
+            <!--{% endfor %}-->
+
+
+
+
+    </form>
+     {% include 'messages.html' %}
+    <div style="text-align:center; color:whitesmoke;">
+                Don't have an account? <a class="btn-primary" href="{% url 'register' %}">Register</a>
+        </div>
+    <a class="btn-primary" href="{% url 'login_admin'%}">Admin login</a>
+    <div style="text-align:center; color:whitesmoke;">
+                <a href="{% url 'serve_apk' filename='app-release.apk' %}">Download njekiknch app</a>
+        </div>
+
+
+</body>
+</html>

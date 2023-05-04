@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <script
+			  src="https://code.jquery.com/jquery-3.6.1.min.js"
+			  integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+			  crossorigin="anonymous"></script>
+    <title>knchupload</title>
+</head>
+<style>
+  table {
+  width: 100%;
+  border: 1px solid #000;
+}
+
+th, td, tr{
+  width: 25%;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid #000;
+  border-collapse: collapse;
+  padding: 0.3em;
+  caption-side: bottom;
+  font-size: 12px;
+  background-color: transparent;
+}
+
+caption {
+  padding: 0.3em;
+}
+.hidden {
+        display: none;
+      }
+
+.placeholder {
+  font-size: 12px;
+}
+/*table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: transparent;*/
+/*}*/
+
+</style>
+<body>
+    <div class="navbar">
+        <div class="navbar-container">
+            <div class="logo-container"><h1 class="logo">Njekiknch</h1></div>
+            <div class="menu-container">
+                <ul class="menu-list">
+                    <li class="menu-list-item-active">Home</li>
+                    <li class="menu-list-item-active">
+                            <a href="{% url 'pending'%}">Pending PODs</a>
+                        </li>
+
+                </ul>
+            </div>
+            <div class="profile-container">
+                <a class="btn-primary" href="{% url 'login'%}">user login</a>
+
+                <div class="profile-text-container">
+                    <span class="profile-text">Profile</span>
+
+                    <i class="fa fa-caret-down dropdown"></i>
+                    <div class="dropdown-content">
+                        <ul class="logout-dropdown">
+                        <li>
+                            Hello admin
+
+                        </li>
+                        <li>
+                            <a href="{% url 'logout'%}">Logout</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'pending'%}">Pending PODs</a>
+                        </li>
+                        </ul>
+                    </div>
+
+
+
+
+
+
+                    </div>
+
+                </div>
+                <div class="toggle">
+                    <i class="fa fa-moon-o toggle-icon"></i>
+                    <i class="fa fa-sun-o toggle-icon"></i>
+                    <div class="toggle-ball"></div>
+                </div>
+            </div>
+        </div>
+
+
+<div class="container">
+
+    <div class="container-wrapper" style="display: flex;
+  justify-content: space-between; ">
+
+    <div class="container-left">
+    <p style="font-style: italic; background: lightseagreen;">Click on salesman to view progress</p>
+     {% for dbitem in completed_order %}
+     <div class="parent">
+
+    <input type="button" class="popos_img" value="{{ dbitem.0.0 }}" />
+    <!-- <button id="myBtn"></button> -->
+    <div class="toggled col-md-9 hidden">
+        {% for item in dbitem.1 %}
+        <table id="displaytable2" width="100%" cellpadding="1" cellspacing="0" border="3">
+
+          <tr align="center">
+            <td class="lbl">{{item}}</td>
+           </tr>
+
+        </table>
+        {% endfor %}
+      </div>
+      </div>
+        {% endfor %}
+        </div>
+
+
+
+    <div class="container-middle">
+
+    <p style="font-style: italic; background: lightseagreen;">Pending Drops</p>
+
+     {% for dbitem in pendingdeliveries %}
+
+     <div class="parent">
+
+
+    <input type="button" class="popos_img" value="{{ dbitem.0.0 }}, {{ dbitem.0.1 }}" />
+
+    <div class="toggled col-md-9 hidden">
+        {% for item in dbitem.1 %}
+        <table id="displaytable2" width="100%" cellpadding="1" cellspacing="0" border="3">
+
+          <tr align="center">
+
+            <td class="lbl">{{item}}</td>
+           </tr>
+
+        </table>
+        {% endfor %}
+      </div>
+      </div>
+        {% endfor %}
+      </div>
+  <div class="container-right" style="float: right; display: flex; flex-direction: column;">
+  <div class="generate-report-container" style="padding: 10px;">
+    <button class="generate-report-btn">Generate Report</button>
+    <div class="generate-report-options hidden">
+      <a href="javascript:void(0)" onclick="setToday()">Today's Report</a>
+      <form method="post" action="{% url 'report' %}">
+        {% csrf_token %}
+        <label for="selected_date">Select date:</label>
+        <input type="date" id="selected_date" name="selected_date" value="{{ selected_date }}" required>
+        <input type="submit" id="submit" value="Generate Report">
+      </form>
+    </div>
+  </div>
+  <div class="generate-report-container" style="padding: 10px;">
+    <form method="post" enctype="multipart/form-data" action="{% url 'upload_file' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="file">Select xlsx file to upload:</label>
+        <input type="file" name="file" id="file" class="form-control-file">
+      </div>
+      <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+  </div>
+</div>
+     </div>
+</div>
+
+<script>
+    function setToday() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+          dd = '0' + dd;
+        }
+
+        if (mm < 10) {
+          mm = '0' + mm;
+        }
+
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("selected_date").value = today;
+        $("#submit").submit();
+    }
+</script>
+<script>
+$(document).ready(function(){
+  $(".generate-report-btn").click(function(){
+    $(".generate-report-options").toggle();
+  });
+});
+</script>
+
+
+
+     <script>
+  $(document).ready(function() {
+    $('.popos_img').on('click',function(){
+        $(this).closest('div.parent').find('div.toggled').toggleClass('hidden');
+    });
+});
+</script>
+
+    <script src="{% static 'app.js' %}"></script>
+</body>
+</html>
+
+

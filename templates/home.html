@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <script
+			  src="https://code.jquery.com/jquery-3.6.1.min.js"
+			  integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+			  crossorigin="anonymous"></script>
+    <title>Njekiknch</title>
+    <script type="text/javascript">
+
+   function changeFunc(value) {
+        var selectBox = document.getElementById("form_need1");
+        var selectB = document.getElementById("form_need2");
+        var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+
+
+        // alert(selectedValue);
+        // alert(selectedV);
+        var invoice = document.getElementById("invoice");
+        // alert(selectedValue);
+
+        if (selectedValue == 1){
+
+            invoice.style.display = "block";
+            }
+
+        else
+         {
+            invoice.style.display = "none";
+            }
+
+   }
+
+
+  </script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-container">
+            <div class="logo-container"><h1 class="logo">NJEKI KNCH</h1></div>
+            <div class="menu-container">
+                <ul class="menu-list">
+                    <li class="menu-list-item-active">Home</li>
+
+                </ul>
+            </div>
+            <div class="profile-container">
+                <!--<img class="profile-picture" src="{% static 'img/milo.png' %}" alt="">-->
+                <div class="profile-text-container">
+                    <span class="profile-text">Profile</span>
+                    <i class="fa fa-caret-down dropdown"></i>
+                    <div class="dropdown-content" style="background-color:black; font-style: italic;">
+                        <ul class="logout-dropdown">
+                        <li>
+                            Hello {{request.user}}
+
+                        </li>
+                        <li>
+                            <a href="{% url 'logout'%}">Logout</a>
+                        </li>
+                        </ul>
+                    </div>
+
+
+
+
+
+
+                    </div>
+
+                </div>
+                <div class="toggle">
+                    <i class="fa fa-moon-o toggle-icon"></i>
+                    <i class="fa fa-sun-o toggle-icon"></i>
+                    <div class="toggle-ball"></div>
+                </div>
+            </div>
+        </div>
+
+
+    <div class="container">
+        <div class="content-container">
+
+
+
+                <h1 class="movie-list-title" style="background: gray; font-size:1rem;" >Enter shop and delivery status</h1>
+
+                            <div class="h4 text-center title"></div>
+                                  <div class="row">
+                                    <!-- <div class="col-md-12"> -->
+                                      <div class="card-body">
+                                        <form style="float:left;" method="POST" enctype="multipart/form-data" class="form" action="#" method="post">{% csrf_token %}
+
+
+                                        <div class="col-md-12">
+                                          <div class="p pb-3"><strong></strong></div>
+                                          <div class="row mb-3">
+                                            <div class="col">
+                                              <div class="form-group" style="background: gray; font-size:1rem;"> <select style="font-size:13pt;" id="form_need" name="shop_name"demo class="form-control" required="required" data-error="Please specify shop name">
+                                                                    <option value="" selected disabled>--Shop_name--</option>
+
+                                                                    {% for item in data%}
+                                                                    {% if item|truncatechars:30 in collectedinvoices %}
+                                                                    <option style="font-style:italic; text-decoration: line-through;">{{ item|truncatechars:0 }}</option>
+                                                                    {% else %}
+                                                                    <option>{{ item|truncatechars:30 }}</option>
+                                                                    {% endif %}
+                                                                    {% endfor %}
+                                                                </select> </div>
+                                            </div>
+                                          </div>
+                                          <div class="row mb-3" style="padding-top: 20px;">
+                                            <div class="col">
+                                              <div class="form-group" style="background: gray">
+                                              <label for="myCheck" style="color:green; background:lightgray;">Delivered:</label>
+                                                    <input type="radio" id="myCheck1" name="completion_status" onclick="myFunction()" style="height:50px; width:50px; vertical-align: middle;">
+                                                    <select id="form_need1" name="completion_status"demo class="form-control" data-error="Please specify completion status" style="display:none" onchange="changeFunc(value);">
+                                                                                                                        <option value="" selected disabled>--Invoice collection--</option>
+                                                                                                                        <option value="1">Invoice Collected</option>
+
+                                                                                                                        <option value="2">Invoice not collected</option>
+
+                                                                                                                    </select>
+                                                    <label for="myCheck" style="color:darkred; background:lightgray;">Not Delivered:</label>
+                                                    <input type="radio" id="myCheck2" name="completion_status" onclick="myFunction()" style="height:50px; width:50px; vertical-align: middle;">
+                                                    <select id="form_need2" name="completion_status"demo class="form-control" data-error="Please specify completion status" style="display:none">
+                                                                                                                        <option value="" selected disabled>--Select reason--</option>
+                                                                                                                        <option value="3">Shop Closed</option>
+
+                                                                                                                        <option value="4">Time</option>
+                                                                                                                        <option value="5">Not Ordered</option>
+                                                                                                                        <option value="6">Wrong Route</option>
+
+
+                                                                                                                    </select>
+
+
+                                                    <script>
+                                                    function myFunction() {
+
+
+                                                      var checkBox = document.getElementById("myCheck1");
+                                                      var checkBox2 = document.getElementById("myCheck2");
+                                                      var select = document.getElementById("form_need1");
+                                                      var select2 = document.getElementById("form_need2");
+                                                      var invoice = document.getElementById("invoice");
+                                                      if (checkBox.checked == true){
+                                                        select.style.display = "block";
+                                                        invoice.style.display = "block";
+
+                                                      } else {
+                                                         select.style.display = "none";
+                                                         invoice.style.display = "none";
+                                                      }
+                                                      if (checkBox2.checked == true){
+                                                        select2.style.display = "block";
+                                                        invoice.style.display = "none";
+
+                                                      } else {
+                                                         select2.style.display = "none";
+                                                         invoice.style.display = "none";
+                                                      }
+                                                    }
+                                                    </script>
+                                              </div>
+                                            </div>
+                                          </div>
+                                           <div class="row mb-3" style="padding-top: 20px;">
+                                            <div class="col">
+                                              <div class="form-group" id="invoice" style="color: lightseagreen; font-style: italic;  padding-top: 25px; display: None;">Take invoice picture!
+                                                {{ form.invoicepicture }}
+                                              </div>
+                                              <script></script>
+                                            </div>
+                                          </div>
+
+                                          <div class="row mb-3" style="padding-top: 20px;">
+                                            <div class="col">
+                                              <div class="form-group">
+                                                <textarea class="form-control" name="message" placeholder="Optional Message"></textarea>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="row mb-3">
+                                            <div class="col">
+
+                                                <button class="btn btn-primary" style="color:lightseagreen" type="submit">Send</button>
+
+
+                                            </div>
+                                          </div>
+                                          {% if messages %}
+                                          {% for message in messages %}
+                                            <div class="alert alert-dismissible alert-success">
+                                              <button type="button" class="close" data-dismiss="alert">
+                                              ×
+                                              </button>
+                                              <strong>{{message}}</strong>
+                                            </div>
+                                         {% endfor %}
+                                        {% endif %}
+
+                                          </div>
+                                        </div>
+
+                                </div>
+                            </div>
+
+
+
+
+
+
+            </form>
+            <img src="https://res.cloudinary.com/dzac7jcg9/image/multi/dl_100/v1664467887/umbrella.gif" alt="Computer man" style="width:48px;height:48px; float:right;">
+
+
+         </div>
+
+
+        </div>
+     </div>
+
+     </div>
+
+
+
+
+
+    <script src="{% static 'app.js' %}"></script>
+</body>
+</html>
