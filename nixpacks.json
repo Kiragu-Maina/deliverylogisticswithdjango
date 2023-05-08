@@ -19,8 +19,7 @@
                 "libcairo2",
                 "pkg-config",
                 "python3-dev",
-                "sox",
-                "cairo"
+                "sox"
             ]
         },
         "install": {
