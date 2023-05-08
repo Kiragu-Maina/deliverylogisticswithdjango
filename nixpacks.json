@@ -14,6 +14,7 @@
                 "default-jdk",
                 "lsof",
                 "wget",
+                "build-essential",
                 "libcairo2-dev",
                 "libcairo2",
                 "pkg-config",
@@ -27,7 +28,7 @@
                 ". /opt/venv/bin/activate",
                 "apt-get install python3-pip -y",
                 "python -m pip install --upgrade pip",
-                "pip3 install pycairo --global-option=build_ext --global-option='-I/usr/include/cairo' --global-option='-L/usr/lib/x86_64-linux-gnu'",
+                "pip3 install pycairo",
                 "pip3 install -r requirements.txt",
                 "python manage.py makemigrations",
                 "python manage.py migrate"
