@@ -14,7 +14,11 @@
                 "default-jdk",
                 "lsof",
                 "wget",
-                "libcairo2-dev"
+                "libcairo2-dev",
+                "sox",
+                "ffmpeg",
+                "libcairo2",
+                "texlive-full"
             ]
         },
         "install": {
@@ -24,6 +28,8 @@
                 "apt-get install python3-pip -y",
                 "python -m pip install --upgrade pip",
                 "pip3 install -r requirements.txt",
+                "pip3 install manimlib",
+                "pip3 install manimce",
                 "python manage.py makemigrations",
                 "python manage.py migrate"
             ]
