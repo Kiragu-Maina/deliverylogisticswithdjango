@@ -28,13 +28,13 @@ SECRET_KEY = 'django-insecure-1uk5484+*3m_d782!6eq3gb@wu=9qd92-w+vaom@o^%*(7x+jb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 MESSAGE_TAGS = {
-        messages.DEBUG: 'alert-secondary',
-        messages.INFO: 'alert-info',
-        messages.SUCCESS: 'alert-success',
-        messages.WARNING: 'alert-warning',
-        messages.ERROR: 'alert-danger',
+    messages.DEBUG: 'alert-secondary',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
 }
-ALLOWED_HOSTS = ['jongleurs.pythonanywhere.com']
+ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ['https://jongleurs.pythonanywhere.com']
 # Application definition
 
@@ -97,23 +97,19 @@ REST_FRAMEWORK = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'jongleurs$kenchic',
-        'USER': 'jongleurs',
-        'PASSWORD': 'kenchicdb',
-        'HOST': 'jongleurs.mysql.pythonanywhere-services.com',
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-
-         }
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ["PGDATABASE"],
+        'USER': os.environ["PGUSER"],
+        'PASSWORD': os.environ["PGPASSWORD"],
+        'HOST': os.environ["PGHOST"],
+        'PORT': os.environ["PGPORT"],
     }
 }
 cloudinary.config(
-  cloud_name = "dzac7jcg9",
-  api_key = "298999595751521",
-  api_secret = "WKPLJLG6puJyJyocjXq-_aJqprg",
-  api_proxy = 'http://proxy.server:3128',
+    cloud_name="dzac7jcg9",
+    api_key="298999595751521",
+    api_secret="WKPLJLG6puJyJyocjXq-_aJqprg",
+    api_proxy='http://proxy.server:3128',
 )
 
 CLOUDINARY_STORAGE = {
@@ -176,8 +172,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # default static files settings for PythonAnywhere.
 # see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
-MEDIA_ROOT = '/home/jongleurs/logisticknch/logisticsappkenchic/media'
-MEDIA_URL = '/media/'
-STATIC_ROOT = '/home/jongleurs/logisticknch/logisticsappkenchic/static'
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
+MEDIA_URL = 'media/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 CORS_ALLOW_ALL_ORIGINS: True
