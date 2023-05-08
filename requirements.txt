@@ -16,4 +16,4 @@ opencv-python==4.7.0.72
 
 
 pillow==9.5.0
-pycountry==22.3.5
+
