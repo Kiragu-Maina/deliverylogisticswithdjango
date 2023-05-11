@@ -19,7 +19,7 @@ import itertools
 from datetime import datetime, date
 from django.shortcuts import render
 from django.http import HttpResponse
-from reportlab.pdfgen import canvas
+
 from weasyprint import HTML
 import pandas as pd
 import datapane as dp
@@ -31,8 +31,8 @@ from .utils import convert_xls_to_sql
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-@csrf_exempt
 
+@csrf_exempt
 def upload_file(request):
     if request.method == 'POST':
         file = request.FILES.get('file')
@@ -53,13 +53,13 @@ def generate_report_view(request):
 
     selected_date = request.POST.get('selected_date')
     today = datetime.strptime(selected_date, '%Y-%m-%d').date()
-    contacts = ContactForm.objects.filter(OrderDate__date=today).order_by('user')
+    contacts = ContactForm.objects.filter(
+        OrderDate__date=today).order_by('user')
 
     contacts_df = pd.DataFrame.from_records(contacts.values_list())
 
-
-
-    report_df = pd.DataFrame(columns=['user', 'delivery_status', 'shop_name','invoice_collected','ordertime'])
+    report_df = pd.DataFrame(
+        columns=['user', 'delivery_status', 'shop_name', 'invoice_collected', 'ordertime'])
 
     # contacts = contacts_df.sort_values('User')
     # print(contacts_df)
@@ -74,7 +74,7 @@ def generate_report_view(request):
                     'delivery_status': '',
                     'shop_name': '',
                     'invoice_collected': '',
-                    'ordertime':'',
+                    'ordertime': '',
                 }
                 report_df = report_df.append(new_row, ignore_index=True)
             new_row = {
@@ -82,7 +82,7 @@ def generate_report_view(request):
                 'delivery_status': 'Delivered',
                 'shop_name': contact.shop_name,
                 'invoice_collected': contact.invoicepicture.url,
-                'ordertime':contact.OrderTime,
+                'ordertime': contact.OrderTime,
             }
             report_df = report_df.append(new_row, ignore_index=True)
         else:
@@ -92,17 +92,17 @@ def generate_report_view(request):
                     'delivery_status': '',
                     'shop_name': '',
                     'invoice_collected': '',
-                    'ordertime':'',
+                    'ordertime': '',
                 }
                 report_df = report_df.append(new_row, ignore_index=True)
-            if 'Invoice Not Collected' in contact.completion_status :
+            if 'Invoice Not Collected' in contact.completion_status:
 
                 new_row = {
                     'user': '',
                     'delivery_status': 'Delivered',
                     'shop_name': contact.shop_name,
                     'invoice_collected': 'POD not collected',
-                    'ordertime':contact.OrderTime,
+                    'ordertime': contact.OrderTime,
                 }
                 report_df = report_df.append(new_row, ignore_index=True)
             else:
@@ -111,13 +111,13 @@ def generate_report_view(request):
                     'delivery_status': 'Not Delivered',
                     'shop_name': contact.shop_name,
                     'invoice_collected': contact.message,
-                    'ordertime':contact.OrderTime,
+                    'ordertime': contact.OrderTime,
                 }
                 report_df = report_df.append(new_row, ignore_index=True)
     print(report_df)
     template = get_template('report.html')
     # report_df = report_df.sort_values('user')
-    context = {'report_df': report_df, 'today':today}
+    context = {'report_df': report_df, 'today': today}
     html = template.render(context)
 
     # Generate the PDF using WeasyPrint
@@ -197,11 +197,14 @@ def logout_user(request):
     logout(request)
     return redirect("home")
 
+
 def serve_apk(request, filename):
     apk_file = os.path.join(BASE_DIR, "apk_files", filename)
     # apk_file = os.path.join('apk_files', filename)
-    response = FileResponse(open(apk_file, 'rb'), content_type='application/vnd.android.package-archive')
+    response = FileResponse(
+        open(apk_file, 'rb'), content_type='application/vnd.android.package-archive')
     return response
+
 
 @csrf_exempt
 @login_required(login_url='login')
@@ -468,7 +471,8 @@ def home_page(request):
 def admin2(request):
     today = date.today()
     dbitems = ContactForm.objects.all()
-    users = ContactForm.objects.filter(OrderDate__date=today).values_list('user').distinct()
+    users = ContactForm.objects.filter(
+        OrderDate__date=today).values_list('user').distinct()
     users = list(itertools.chain(*users))
     if not len(users):
         users = ['no drops yet']
@@ -486,7 +490,7 @@ def admin2(request):
                     string = string.replace(ele, "")
             return string
 
-        shop_names = ContactForm.objects.filter(user__icontains=user,OrderDate__date=today).values_list(
+        shop_names = ContactForm.objects.filter(user__icontains=user, OrderDate__date=today).values_list(
             'shop_name', 'completion_status', 'OrderTime')
         shop_names = itertools.chain(*shop_names)
         # shop_names = [remove_punc(i) for i in shop_names]
@@ -523,7 +527,7 @@ def admin2(request):
             drops = drops(user)
             remaining = len(drops)
             pendingdelivery = 'all'
-            pendingdeliveria=(user,pendingdelivery)
+            pendingdeliveria = (user, pendingdelivery)
             pendingdeliveries.append(pendingdeliveria)
             # print(user,remaining)
         else:
@@ -544,11 +548,11 @@ def admin2(request):
             # print(remaining)
 
             remaining = len(remainings)
-            usera = (user,remaining)
-            pendingdelivery = (usera,remainings)
+            usera = (user, remaining)
+            pendingdelivery = (usera, remainings)
             pendingdeliveries.append(pendingdelivery)
             # print(user,remaining)
-        user = (user,remaining)
+        user = (user, remaining)
         complete = (user, shops)
 
         completed_order.append(complete)
@@ -564,27 +568,23 @@ def admin2(request):
         # def pendingcollected_invoices(user):
         #     return list(PodStatus.objects.filter(user__icontains=user).values_list('shop_name'))
 
-
         def collectedinvoices(user):
             return list(PodStatus.objects.filter(user__icontains=user, podstatus='POD Collected', OrderDate__date=today).values_list('shop_name'))
             # return kenchiccnew.objects.filter(id__in=routeplan).values()
-
-
 
         collectedinvoices = collectedinvoices(user)
         # collectedinvoices = list(collectedinvoices)
         # print(collectedinvoices)
 
-
-
         pendinginvoices = pending_invoices(user)
 
-        pendinginvoices = [x for x in pendinginvoices if x[0] not in [y[0] for y in collectedinvoices]]
+        pendinginvoices = [x for x in pendinginvoices if x[0]
+                           not in [y[0] for y in collectedinvoices]]
         pendin_invoices.append(pendinginvoices)
         # print("pending 2" , pendinginvoices)
         # print("this is the new data ", data)
 
-    return render(request, 'admin2.html', {'action': "Display all ContactForm", 'dbitems': dbitems, 'users': users, 'completed_order': completed_order, 'shops': shops, 'pending_invoices':pendin_invoices, 'pendingdeliveries':pendingdeliveries})
+    return render(request, 'admin2.html', {'action': "Display all ContactForm", 'dbitems': dbitems, 'users': users, 'completed_order': completed_order, 'shops': shops, 'pending_invoices': pendin_invoices, 'pendingdeliveries': pendingdeliveries})
 
 
 def pending(request):
@@ -594,29 +594,25 @@ def pending(request):
     users = list(itertools.chain(*users))
     print(users)
 
-
     pendin_invoices = []
     for user in users:
 
         def pending_invoices(user):
-            invoices = PodStatus.objects.filter(user__icontains=user, podstatus='POD Not Collected').values_list('shop_name', 'OrderDate')
+            invoices = PodStatus.objects.filter(
+                user__icontains=user, podstatus='POD Not Collected').values_list('shop_name', 'OrderDate')
             formatted_invoices = []
             for shop_name, order_date in invoices:
-                formatted_date = datetime.strftime(order_date, "%B %d, %Y %I:%M %p")
+                formatted_date = datetime.strftime(
+                    order_date, "%B %d, %Y %I:%M %p")
                 formatted_invoices.append((shop_name, formatted_date))
             return formatted_invoices
-
-
 
         # def pendingcollected_invoices(user):
         #     return list(PodStatus.objects.filter(user__icontains=user).values_list('shop_name'))
 
-
         def collectedinvoices(user):
             return list(PodStatus.objects.filter(user__icontains=user, podstatus='POD Collected', OrderDate__date=today).values_list('shop_name'))
             # return kenchiccnew.objects.filter(id__in=routeplan).values()
-
-
 
         collectedinvoices = collectedinvoices(user)
         # collectedinvoices = list(collectedinvoices)
@@ -632,8 +628,10 @@ def pending(request):
 
                 try:
                     order_date_str = shop_name_parts[1].strip()[:-1]
-                    order_date_formatted = datetime.strptime(order_date_str, '%Y-%m-%dT%H:%M:%S%z')
-                    order_date = order_date_formatted.strftime("%B %d, %Y %I:%M %p")
+                    order_date_formatted = datetime.strptime(
+                        order_date_str, '%Y-%m-%dT%H:%M:%S%z')
+                    order_date = order_date_formatted.strftime(
+                        "%B %d, %Y %I:%M %p")
                     # print("continued to ", order_date)
                 except ValueError:
                     # Skip this PendingForm instance if the order date is invalid
@@ -653,12 +651,14 @@ def pending(request):
                 new_pending_invoices.append((shop_name, order_date))
         pendinginvoices = new_pending_invoices
 
-        pendinginvoices = [x for x in pendinginvoices if x[0] not in [y[0] for y in collectedinvoices]]
-        complete = (user,pendinginvoices)
+        pendinginvoices = [x for x in pendinginvoices if x[0]
+                           not in [y[0] for y in collectedinvoices]]
+        complete = (user, pendinginvoices)
         pendin_invoices.append(complete)
     # print(pendin_invoices)
 
-    return render(request, 'pending.html', {'pending_invoices':pendin_invoices})
+    return render(request, 'pending.html', {'pending_invoices': pendin_invoices})
+
 
 def shops_per_user(user):
     routeplan = kenchiccnew.objects.filter(Q(Posting_Description__icontains='KCX 469Y') | Q(Posting_Description__icontains='KCX 850W') | Q(Posting_Description__icontains='KDD 090R') | Q(Posting_Description__icontains='KDD 205J') | Q(Posting_Description__icontains='KDD 206J') | Q(Posting_Description__icontains='KDE 017W') | Q(Posting_Description__icontains='KDG 805F') | Q(Posting_Description__icontains='KCF 445R') | Q(Posting_Description__icontains='KCH 314V') | Q(Posting_Description__icontains='KCH 316V') | Q(Posting_Description__icontains='KCL 442A') | Q(Posting_Description__icontains='KCU 236D') | Q(Posting_Description__icontains='KCU 237D') | Q(Posting_Description__icontains='KCU 410E') | Q(Posting_Description__icontains='KCX 833H') | Q(Posting_Description__icontains='KCZ 313B') | Q(Posting_Description__icontains='KCZ 314B') | Q(Posting_Description__icontains='KDE 958P') | Q(Posting_Description__icontains='KCX 806H') | Q(
@@ -707,7 +707,6 @@ def shops_per_user(user):
 
             shopname_and_pd = f"{Customer_Name} {Posting_Description}"
             shops.append((shopname_and_pd))
-
 
     # print(shops)
 
