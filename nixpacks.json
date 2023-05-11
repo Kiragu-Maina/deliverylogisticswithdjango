@@ -6,7 +6,8 @@
                 "add-apt-repository ppa:deadsnakes/ppa -y",
                 "apt update",
                 "apt install python3.10 -y",
-                "apt install python3-dev -y"
+                "apt install python3-dev -y",
+                "apt-get update && apt-get install -y libgirepository1.0-dev"
             ],
             "aptPkgs": [
                 "postgresql",
