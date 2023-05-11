@@ -7,8 +7,6 @@
                 "apt update",
                 "apt install python3.10 -y",
                 "apt install python3-dev"
-                
-
             ],
             "aptPkgs": [
                 "postgresql",
@@ -21,7 +19,6 @@
                 "libcairo2-dev",
                 "libcairo2",
                 "pkg-config",
-                
                 "sox"
             ]
         },
@@ -31,7 +28,6 @@
                 ". /opt/venv/bin/activate",
                 "apt-get install python3-pip -y",
                 "python -m pip install --upgrade pip",
-                "pip3 install pycairo",
                 "pip3 install -r requirements.txt",
                 "python manage.py makemigrations",
                 "python manage.py migrate"
