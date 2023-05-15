@@ -5,22 +5,12 @@
                 "apt install software-properties-common -y",
                 "add-apt-repository ppa:deadsnakes/ppa -y",
                 "apt update",
-                "apt install python3.10 -y",
-                "apt install python3-dev -y",
-                "apt-get update && apt-get install -y libgirepository1.0-dev"
+                "apt install python3.10 -y"
             ],
             "aptPkgs": [
                 "postgresql",
                 "gcc",
-                "curl",
-                "default-jdk",
-                "lsof",
-                "wget",
-                "build-essential",
-                "libcairo2-dev",
-                "libcairo2",
-                "pkg-config",
-                "sox"
+                "default-jdk"
             ]
         },
         "install": {
