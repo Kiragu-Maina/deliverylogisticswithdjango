@@ -45,9 +45,9 @@ def convert_xls_to_sql(filename):
         posting_description = row.Posting_Description
         route_plan = row.Route_Plan
         ordered_weight = row.Ordered_Weight
-
-        insert_sql = f"INSERT INTO pages_kenchiccnew (Customer_Name, Posting_Description, Route_Plan, Ordered_Weight) VALUES ('{customer_name}', '{posting_description}', '{route_plan}', '{ordered_weight}');"
-        conn.execute(insert_sql)
+        insert_sql = "INSERT INTO pages_kenchiccnew (Customer_Name, Posting_Description, Route_Plan, Ordered_Weight) VALUES (%s, %s, %s, %s);"
+        values = (customer_name, posting_description, route_plan, ordered_weight)
+        conn.execute(insert_sql, values)
 
     connection.commit()
 
