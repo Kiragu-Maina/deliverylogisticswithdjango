@@ -16,40 +16,39 @@ def convert_xls_to_sql(filename):
         }
     )
 
+    # Save the DataFrame to a JSON file
+    with open("output2.json", "w") as f:
+        json.dump(df.to_dict(orient="records"), f, indent=4)
 
-# Save the DataFrame to a JSON file
-with open("output2.json", "w") as f:
-    json.dump(df.to_dict(orient="records"), f, indent=4)
+    # Connect to the PostgreSQL database using Django's database settings
+    conn = connection.cursor()
 
-# Connect to the PostgreSQL database using Django's database settings
-conn = connection.cursor()
+    # Drop the existing pages_kenchiccnew table (if it exists)
+    conn.execute("DROP TABLE IF EXISTS pages_kenchiccnew;")
 
-# Drop the existing pages_kenchiccnew table (if it exists)
-conn.execute("DROP TABLE IF EXISTS pages_kenchiccnew;")
-
-# Create a new pages_kenchiccnew table with the appropriate columns
-conn.execute(
+    # Create a new pages_kenchiccnew table with the appropriate columns
+    conn.execute(
+        """
+        CREATE TABLE pages_kenchiccnew (
+        id SERIAL PRIMARY KEY,
+        Customer_Name varchar(100),
+        Posting_Description varchar(100),
+        Route_Plan varchar(100),
+        Ordered_Weight varchar(150)
+        );
     """
-    CREATE TABLE pages_kenchiccnew (
-      id SERIAL PRIMARY KEY,
-      Customer_Name varchar(100),
-      Posting_Description varchar(100),
-      Route_Plan varchar(100),
-      Ordered_Weight varchar(150)
-    );
-"""
-)
+    )
 
-# Loop through the data and generate SQL INSERT statements for each row
-for row in df.itertuples():
-    customer_name = row.Customer_Name
-    posting_description = row.Posting_Description
-    route_plan = row.Route_Plan
-    ordered_weight = row.Ordered_Weight
+    # Loop through the data and generate SQL INSERT statements for each row
+    for row in df.itertuples():
+        customer_name = row.Customer_Name
+        posting_description = row.Posting_Description
+        route_plan = row.Route_Plan
+        ordered_weight = row.Ordered_Weight
 
-    insert_sql = f"INSERT INTO pages_kenchiccnew (Customer_Name, Posting_Description, Route_Plan, Ordered_Weight) VALUES ('{customer_name}', '{posting_description}', '{route_plan}', '{ordered_weight}');"
-    conn.execute(insert_sql)
+        insert_sql = f"INSERT INTO pages_kenchiccnew (Customer_Name, Posting_Description, Route_Plan, Ordered_Weight) VALUES ('{customer_name}', '{posting_description}', '{route_plan}', '{ordered_weight}');"
+        conn.execute(insert_sql)
 
-connection.commit()
+    connection.commit()
 
-print("routes updated")
+    print("routes updated")
