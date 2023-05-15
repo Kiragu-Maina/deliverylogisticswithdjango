@@ -10,7 +10,14 @@
             "aptPkgs": [
                 "postgresql",
                 "gcc",
-                "default-jdk"
+                "default-jdk",
+                "libgtk2.0-dev",
+                "pkg-config",
+                "libavcodec-dev",
+                "libavformat-dev",
+                "libswscale-dev",
+                "python-dev",
+                "python-numpy"
             ]
         },
         "install": {
