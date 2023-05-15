@@ -2,19 +2,24 @@ import pandas as pd
 from django.db import connection
 import json
 
+
 def convert_xls_to_sql(filename):
-# Load the XLS file into a pandas DataFrame
-df = pd.read_excel(filename, header=1)
-df = df.fillna('')
-df = df.rename(columns={
-'Customer Name ': 'Customer_Name',
-'Posting Description': 'Posting_Description',
-'Route Plan': 'Route_Plan',
-'Ordered Weight': 'Ordered_Weight'
-})
+    # Load the XLS file into a pandas DataFrame
+    df = pd.read_excel(filename, header=1)
+    df = df.fillna("")
+    df = df.rename(
+        columns={
+            "Customer Name ": "Customer_Name",
+            "Posting Description": "Posting_Description",
+            "Route Plan": "Route_Plan",
+            "Ordered Weight": "Ordered_Weight",
+        }
+    )
+
+
 # Save the DataFrame to a JSON file
-with open('output2.json', 'w') as f:
-    json.dump(df.to_dict(orient='records'), f, indent=4)
+with open("output2.json", "w") as f:
+    json.dump(df.to_dict(orient="records"), f, indent=4)
 
 # Connect to the PostgreSQL database using Django's database settings
 conn = connection.cursor()
@@ -23,7 +28,8 @@ conn = connection.cursor()
 conn.execute("DROP TABLE IF EXISTS pages_kenchiccnew;")
 
 # Create a new pages_kenchiccnew table with the appropriate columns
-conn.execute("""
+conn.execute(
+    """
     CREATE TABLE pages_kenchiccnew (
       id SERIAL PRIMARY KEY,
       Customer_Name varchar(100),
@@ -31,7 +37,8 @@ conn.execute("""
       Route_Plan varchar(100),
       Ordered_Weight varchar(150)
     );
-""")
+"""
+)
 
 # Loop through the data and generate SQL INSERT statements for each row
 for row in df.itertuples():
@@ -45,4 +52,4 @@ for row in df.itertuples():
 
 connection.commit()
 
-print('routes updated')
+print("routes updated")
