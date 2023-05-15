@@ -45,6 +45,7 @@ class PodStatus(models.Model):
     podstatus = models.CharField(max_length=50, unique=False)
     shop_name = models.CharField(max_length=150)
     OrderDate = models.DateTimeField(auto_now=True)
+
     user = models.CharField(max_length=32, unique=True)
 
     def __str__(self):
