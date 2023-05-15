@@ -2,6 +2,7 @@
     "phases": {
         "setup": {
             "cmds": [
+                "apt update",
                 "apt install software-properties-common -y",
                 "add-apt-repository ppa:deadsnakes/ppa -y",
                 "apt update",
