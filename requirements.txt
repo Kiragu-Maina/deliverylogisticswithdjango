@@ -15,4 +15,5 @@ datapane==0.16.4
 opencv-python-headless
 
 pillow==9.5.0
+openpyxl
 
