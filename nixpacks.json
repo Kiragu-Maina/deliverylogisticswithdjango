@@ -20,7 +20,7 @@
                 "python -m venv /opt/venv",
                 ". /opt/venv/bin/activate",
                 "apt-get install python3-pip -y",
-                "apt install python3-pip libpango-1.0-0 libharfbuzz0b libpangoft2-1.0-0 -y",
+                "apt install python3-pip libpango-1.0-0 libharfbuzz0b libpangoft2-1.0-0 libffi-dev libjpeg-dev libopenjp2-7-dev -y",
                 "python -m pip install --upgrade pip",
                 "pip3 install -r requirements.txt",
                 "python manage.py makemigrations",
