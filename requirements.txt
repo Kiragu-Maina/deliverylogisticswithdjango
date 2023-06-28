@@ -10,6 +10,7 @@ cloudinary==1.32.0
 django-cloudinary-storage==0.3.0
 requests==2.30.0
 pandas==1.5.3
+weasyprint
 
 datapane==0.16.4
 opencv-python-headless

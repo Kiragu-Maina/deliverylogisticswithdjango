@@ -20,7 +20,7 @@ from datetime import datetime, date
 from django.shortcuts import render
 from django.http import HttpResponse
 
-# from weasyprint import HTML
+from weasyprint import HTML
 import pandas as pd
 import datapane as dp
 from django.template.loader import get_template
@@ -123,7 +123,7 @@ def generate_report_view(request):
     # Generate the PDF using WeasyPrint
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="report.pdf"'
-    # HTML(string=html).write_pdf(response)
+    HTML(string=html).write_pdf(response)
 
     return response
 
