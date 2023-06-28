@@ -172,12 +172,7 @@ tr:nth-child(even) {
     <button class="generate-report-btn">Generate Report</button>
     <div class="generate-report-options hidden">
       <a href="javascript:void(0)" onclick="setToday()">Today's Report</a>
-      <form method="post" action="{% url 'report' %}">
-        {% csrf_token %}
-        <label for="selected_date">Select date:</label>
-        <input type="date" id="selected_date" name="selected_date" value="{{ selected_date }}" required>
-        <input type="submit" id="submit" value="Generate Report">
-      </form>
+      
     </div>
   </div>
   <div class="generate-report-container" style="padding: 10px;">

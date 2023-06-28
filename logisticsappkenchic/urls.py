@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from pages.views import register_page, login_page, home_page, logout_user, admin2, login_admin, workerror, serve_apk, pending, upload_file
-from pages.views import GenerateReportView
+
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 
@@ -59,7 +59,7 @@ urlpatterns = [
     path('loginadmin/', login_admin, name="login_admin"),
     path('admin2/', admin2, name="admin2"),
     path('workerror/', workerror, name="workerror"),
-    path('report/', GenerateReportView.as_view(), name="report"),
+    # path('report/', GenerateReportView.as_view(), name="report"),
     path('apk/<str:filename>/', serve_apk, name='serve_apk'),
     path('pending/', pending, name='pending'),
     path('upload_file/', upload_file, name='upload_file'),
