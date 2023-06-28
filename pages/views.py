@@ -20,7 +20,8 @@ from datetime import datetime, date
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from weasyprint import HTML
+from django_weasyprint.views import WeasyTemplateResponseMixin
+from django.views.generic import View
 import pandas as pd
 import datapane as dp
 from django.template.loader import get_template
@@ -31,27 +32,9 @@ from .utils import convert_xls_to_sql
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-@csrf_exempt
-def upload_file(request):
-    if request.method == 'POST':
-        file = request.FILES.get('file')
-        if not file:
-            return HttpResponse('No file uploaded', status=400)
-        try:
-            # Call function to convert XLS to SQL
-            # column_mappings = get_column_mappings(file)
-            convert_xls_to_sql(file)
-            return HttpResponse('File uploaded and converted successfully')
-        except Exception as e:
-            print(f'Error converting XLS to SQL: {e}')
-            return HttpResponse('Error converting XLS to SQL', status=500)
-    return render(request, 'upload_file.html')
-
-
-def generate_report_view(request):
-
-    selected_date = request.POST.get('selected_date')
+class GenerateReportView(WeasyTemplateResponseMixin, View):
+    def get(self, request, *args, **kwargs):
+        selected_date = request.POST.get('selected_date')
     today = datetime.strptime(selected_date, '%Y-%m-%d').date()
     contacts = ContactForm.objects.filter(
         OrderDate__date=today).order_by('user')
@@ -121,11 +104,104 @@ def generate_report_view(request):
     html = template.render(context)
 
     # Generate the PDF using WeasyPrint
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="report.pdf"'
-    HTML(string=html).write_pdf(response)
+    response = self.response_class(request=self.request, filename='report.pdf')
+    return self.render_to_response({'report_df': report_df, 'today': today}, **kwargs)
 
-    return response
+
+@csrf_exempt
+def upload_file(request):
+    if request.method == 'POST':
+        file = request.FILES.get('file')
+        if not file:
+            return HttpResponse('No file uploaded', status=400)
+        try:
+            # Call function to convert XLS to SQL
+            # column_mappings = get_column_mappings(file)
+            convert_xls_to_sql(file)
+            return HttpResponse('File uploaded and converted successfully')
+        except Exception as e:
+            print(f'Error converting XLS to SQL: {e}')
+            return HttpResponse('Error converting XLS to SQL', status=500)
+    return render(request, 'upload_file.html')
+
+
+# def generate_report_view(request):
+
+#     selected_date = request.POST.get('selected_date')
+#     today = datetime.strptime(selected_date, '%Y-%m-%d').date()
+#     contacts = ContactForm.objects.filter(
+#         OrderDate__date=today).order_by('user')
+
+#     contacts_df = pd.DataFrame.from_records(contacts.values_list())
+
+#     report_df = pd.DataFrame(
+#         columns=['user', 'delivery_status', 'shop_name', 'invoice_collected', 'ordertime'])
+
+#     # contacts = contacts_df.sort_values('User')
+#     # print(contacts_df)
+
+#     for contact in contacts:
+#         print(contact.OrderTime)
+#         if contact.invoicepicture:
+#             # print(contact.invoicepicture.url)
+#             if contact.user not in report_df['user'].values:
+#                 new_row = {
+#                     'user': contact.user,
+#                     'delivery_status': '',
+#                     'shop_name': '',
+#                     'invoice_collected': '',
+#                     'ordertime': '',
+#                 }
+#                 report_df = report_df.append(new_row, ignore_index=True)
+#             new_row = {
+#                 'user': '',
+#                 'delivery_status': 'Delivered',
+#                 'shop_name': contact.shop_name,
+#                 'invoice_collected': contact.invoicepicture.url,
+#                 'ordertime': contact.OrderTime,
+#             }
+#             report_df = report_df.append(new_row, ignore_index=True)
+#         else:
+#             if contact.user not in report_df['user'].values:
+#                 new_row = {
+#                     'user': contact.user,
+#                     'delivery_status': '',
+#                     'shop_name': '',
+#                     'invoice_collected': '',
+#                     'ordertime': '',
+#                 }
+#                 report_df = report_df.append(new_row, ignore_index=True)
+#             if 'Invoice Not Collected' in contact.completion_status:
+
+#                 new_row = {
+#                     'user': '',
+#                     'delivery_status': 'Delivered',
+#                     'shop_name': contact.shop_name,
+#                     'invoice_collected': 'POD not collected',
+#                     'ordertime': contact.OrderTime,
+#                 }
+#                 report_df = report_df.append(new_row, ignore_index=True)
+#             else:
+#                 new_row = {
+#                     'user': '',
+#                     'delivery_status': 'Not Delivered',
+#                     'shop_name': contact.shop_name,
+#                     'invoice_collected': contact.message,
+#                     'ordertime': contact.OrderTime,
+#                 }
+#                 report_df = report_df.append(new_row, ignore_index=True)
+#     print(report_df)
+#     template = get_template('report.html')
+#     # report_df = report_df.sort_values('user')
+#     context = {'report_df': report_df, 'today': today}
+#     html = template.render(context)
+
+#     # Generate the PDF using WeasyPrint
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+#     HTML(string=html).write_pdf(response)
+
+#     return response
 
 
 def register_page(request):

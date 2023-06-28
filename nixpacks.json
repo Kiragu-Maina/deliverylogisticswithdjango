@@ -11,16 +11,8 @@
             "aptPkgs": [
                 "postgresql",
                 "gcc",
-                "default-jdk",
-                "py3-pip",
-                "musl-dev", 
-                "python-dev",
-                "pango",
-                "zlib-dev",
-                "jpeg-dev",
-                "openjpeg-dev",
-                "g++",
-                "libffi-dev"
+                "default-jdk"
+                
             ]
         },
         "install": {
