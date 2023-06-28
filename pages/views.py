@@ -35,77 +35,77 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 class GenerateReportView(WeasyTemplateResponseMixin, View):
     def get(self, request, *args, **kwargs):
         selected_date = request.POST.get('selected_date')
-    today = datetime.strptime(selected_date, '%Y-%m-%d').date()
-    contacts = ContactForm.objects.filter(
-        OrderDate__date=today).order_by('user')
+        today = datetime.strptime(selected_date, '%Y-%m-%d').date()
+        contacts = ContactForm.objects.filter(
+            OrderDate__date=today).order_by('user')
 
-    contacts_df = pd.DataFrame.from_records(contacts.values_list())
+        contacts_df = pd.DataFrame.from_records(contacts.values_list())
 
-    report_df = pd.DataFrame(
-        columns=['user', 'delivery_status', 'shop_name', 'invoice_collected', 'ordertime'])
+        report_df = pd.DataFrame(
+            columns=['user', 'delivery_status', 'shop_name', 'invoice_collected', 'ordertime'])
 
-    # contacts = contacts_df.sort_values('User')
-    # print(contacts_df)
+        # contacts = contacts_df.sort_values('User')
+        # print(contacts_df)
 
-    for contact in contacts:
-        print(contact.OrderTime)
-        if contact.invoicepicture:
-            # print(contact.invoicepicture.url)
-            if contact.user not in report_df['user'].values:
-                new_row = {
-                    'user': contact.user,
-                    'delivery_status': '',
-                    'shop_name': '',
-                    'invoice_collected': '',
-                    'ordertime': '',
-                }
-                report_df = report_df.append(new_row, ignore_index=True)
-            new_row = {
-                'user': '',
-                'delivery_status': 'Delivered',
-                'shop_name': contact.shop_name,
-                'invoice_collected': contact.invoicepicture.url,
-                'ordertime': contact.OrderTime,
-            }
-            report_df = report_df.append(new_row, ignore_index=True)
-        else:
-            if contact.user not in report_df['user'].values:
-                new_row = {
-                    'user': contact.user,
-                    'delivery_status': '',
-                    'shop_name': '',
-                    'invoice_collected': '',
-                    'ordertime': '',
-                }
-                report_df = report_df.append(new_row, ignore_index=True)
-            if 'Invoice Not Collected' in contact.completion_status:
-
+        for contact in contacts:
+            print(contact.OrderTime)
+            if contact.invoicepicture:
+                # print(contact.invoicepicture.url)
+                if contact.user not in report_df['user'].values:
+                    new_row = {
+                        'user': contact.user,
+                        'delivery_status': '',
+                        'shop_name': '',
+                        'invoice_collected': '',
+                        'ordertime': '',
+                    }
+                    report_df = report_df.append(new_row, ignore_index=True)
                 new_row = {
                     'user': '',
                     'delivery_status': 'Delivered',
                     'shop_name': contact.shop_name,
-                    'invoice_collected': 'POD not collected',
+                    'invoice_collected': contact.invoicepicture.url,
                     'ordertime': contact.OrderTime,
                 }
                 report_df = report_df.append(new_row, ignore_index=True)
             else:
-                new_row = {
-                    'user': '',
-                    'delivery_status': 'Not Delivered',
-                    'shop_name': contact.shop_name,
-                    'invoice_collected': contact.message,
-                    'ordertime': contact.OrderTime,
-                }
-                report_df = report_df.append(new_row, ignore_index=True)
-    print(report_df)
-    template = get_template('report.html')
-    # report_df = report_df.sort_values('user')
-    context = {'report_df': report_df, 'today': today}
-    html = template.render(context)
+                if contact.user not in report_df['user'].values:
+                    new_row = {
+                        'user': contact.user,
+                        'delivery_status': '',
+                        'shop_name': '',
+                        'invoice_collected': '',
+                        'ordertime': '',
+                    }
+                    report_df = report_df.append(new_row, ignore_index=True)
+                if 'Invoice Not Collected' in contact.completion_status:
 
-    # Generate the PDF using WeasyPrint
-    response = self.response_class(request=self.request, filename='report.pdf')
-    return self.render_to_response({'report_df': report_df, 'today': today}, **kwargs)
+                    new_row = {
+                        'user': '',
+                        'delivery_status': 'Delivered',
+                        'shop_name': contact.shop_name,
+                        'invoice_collected': 'POD not collected',
+                        'ordertime': contact.OrderTime,
+                    }
+                    report_df = report_df.append(new_row, ignore_index=True)
+                else:
+                    new_row = {
+                        'user': '',
+                        'delivery_status': 'Not Delivered',
+                        'shop_name': contact.shop_name,
+                        'invoice_collected': contact.message,
+                        'ordertime': contact.OrderTime,
+                    }
+                    report_df = report_df.append(new_row, ignore_index=True)
+        print(report_df)
+        template = get_template('report.html')
+        # report_df = report_df.sort_values('user')
+        context = {'report_df': report_df, 'today': today}
+        html = template.render(context)
+
+        # Generate the PDF using WeasyPrint
+        response = self.response_class(request=self.request, filename='report.pdf')
+        return self.render_to_response({'report_df': report_df, 'today': today}, **kwargs)
 
 
 @csrf_exempt
